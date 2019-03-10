@@ -3,6 +3,8 @@ package com.justpz.sda;
 import com.justpz.sda.dependency.MobileOperator;
 import com.justpz.sda.dependency.MobileOperatorCheckerCache;
 import com.justpz.sda.dependency.MobileOperatorCheckerWebService;
+import com.justpz.sda.exception.MobileOperatorCheckFailedException;
+import com.justpz.sda.exception.WebServiceNetworkException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,19 +34,26 @@ class MobileOperatorCheckerServiceTest {
 
     @Test
     void shouldReturnOperatorFromCacheWhenIsInCache() {
-        //given
-//        MobileOperatorCheckerCache cache = Mockito
-//                .mock(MobileOperatorCheckerCache.class);
-//        MobileOperatorCheckerWebService webService = Mockito
-//                .mock(MobileOperatorCheckerWebService.class);
-//        MobileOperatorCheckerService service =
-//                new MobileOperatorCheckerService(cache, webService);
-        //when
+
         Mockito.when(cache.getCachedOperator("200300620"))
                 .thenReturn(Optional.of(MobileOperator.ORANGE));
         MobileOperator mobileOperator = service.checkOperator("200300620");
         //then
         assertEquals(MobileOperator.ORANGE, mobileOperator);
+
+    }
+
+    @Test
+    void shouldThrowExceptionWhenWebServiceTrowException() throws WebServiceNetworkException {
+        //given
+        Mockito.when(cache.getCachedOperator("200300620"))
+                .thenReturn(Optional.empty());
+        Mockito.when(webService.checkOperator("200300620")).thenThrow(WebServiceNetworkException.class);
+        //when
+        //then
+        MobileOperatorCheckFailedException exception = assertThrows(MobileOperatorCheckFailedException.class,
+                () -> service.checkOperator("200300620"));
+        assertEquals("200300620", exception.getMobileNumber());
 
     }
 }

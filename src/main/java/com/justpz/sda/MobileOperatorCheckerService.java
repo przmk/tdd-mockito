@@ -2,8 +2,18 @@ package com.justpz.sda;
 
 
 import com.justpz.sda.dependency.MobileOperator;
+import com.justpz.sda.dependency.MobileOperatorCheckerCache;
+import com.justpz.sda.dependency.MobileOperatorCheckerWebService;
 
 public class MobileOperatorCheckerService {
+    private final MobileOperatorCheckerCache cache;
+    private final MobileOperatorCheckerWebService service;
+
+    public MobileOperatorCheckerService(MobileOperatorCheckerCache cache,
+                                        MobileOperatorCheckerWebService service) {
+        this.cache = cache;
+        this.service = service;
+    }
 
     /**
      * Logika dzialania:

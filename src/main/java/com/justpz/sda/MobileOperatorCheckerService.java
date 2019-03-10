@@ -5,6 +5,8 @@ import com.justpz.sda.dependency.MobileOperator;
 import com.justpz.sda.dependency.MobileOperatorCheckerCache;
 import com.justpz.sda.dependency.MobileOperatorCheckerWebService;
 
+import java.util.Optional;
+
 public class MobileOperatorCheckerService {
     private final MobileOperatorCheckerCache cache;
     private final MobileOperatorCheckerWebService service;
@@ -26,6 +28,10 @@ public class MobileOperatorCheckerService {
      * (najlepiej mieć ich wstrzykniętych w jakiś przyzwoity sposób).
      */
     public MobileOperator checkOperator(String mobileNumber) {
-        throw new UnsupportedOperationException("Implement me!");
+        Optional<MobileOperator> cachedOperator = cache.getCachedOperator(mobileNumber);
+        if (cachedOperator.isPresent()){
+            return cachedOperator.get();
+        }
+        return null;
     }
 }

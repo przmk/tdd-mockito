@@ -1,13 +1,10 @@
 package com.justpz.sda.dependency;
 
-
 import com.justpz.sda.exception.DependencyInvokedInUnitTestException;
+import com.justpz.sda.exception.NotEnoughMoneyException;
 
-import java.util.Optional;
-
-public class MobileOperatorCheckerCache {
-
-    public Optional<MobileOperator> getCachedOperator(String mobileNumber) {
+public class DadMoneyService {
+    public Integer askForMoney(Integer amount) throws NotEnoughMoneyException {
         throw new DependencyInvokedInUnitTestException(getClass());
     }
 }
